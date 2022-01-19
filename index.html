@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/MarkerCluster.css">
+        <link rel="stylesheet" href="css/MarkerCluster.Default.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <style>
+        #map {
+            width: 1022px;
+            height: 969px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/multi-style-layer.js"></script>
+        <script src="js/leaflet-svg-shape-markers.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
+        <script src="data/Districts_sanitaires_3.js"></script>
+        <script src="data/USP_Kara_Accouch_moyen_4.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:6
+        }).fitBounds([[8.70270807327869,-0.0042611324640752235],[10.228744547613914,1.6054153968243727]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_MapboxStreetsv10_0');
+        map.getPane('pane_MapboxStreetsv10_0').style.zIndex = 400;
+        var layer_MapboxStreetsv10_0 = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA', {
+            pane: 'pane_MapboxStreetsv10_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.mapbox.com/about/maps/">© Mapbox © OpenStreetMap</a>',
+            minZoom: 6,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_MapboxStreetsv10_0;
+        map.addLayer(layer_MapboxStreetsv10_0);
+        map.createPane('pane_BingAerial_1');
+        map.getPane('pane_BingAerial_1').style.zIndex = 401;
+        var layer_BingAerial_1 = L.tileLayer('http://ak.t0.tiles.virtualearth.net/tiles/a{q}.jpeg?n=z&g=5880', {
+            pane: 'pane_BingAerial_1',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 6,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_BingAerial_1;
+        map.addLayer(layer_BingAerial_1);
+        map.createPane('pane_OSMHumanitarian_2');
+        map.getPane('pane_OSMHumanitarian_2').style.zIndex = 402;
+        var layer_OSMHumanitarian_2 = L.tileLayer('http://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+            pane: 'pane_OSMHumanitarian_2',
+            opacity: 1.0,
+            attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors, CC-BY-SA</a>',
+            minZoom: 6,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OSMHumanitarian_2;
+        map.addLayer(layer_OSMHumanitarian_2);
+        function pop_Districts_sanitaires_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PAYS'] !== null ? autolinker.link(feature.properties['PAYS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>AREA</strong><br />' + (feature.properties['AREA'] !== null ? autolinker.link(feature.properties['AREA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ACRES'] !== null ? autolinker.link(feature.properties['ACRES'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PERIMETER'] !== null ? autolinker.link(feature.properties['PERIMETER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PRéFECTUR'] !== null ? autolinker.link(feature.properties['PRéFECTUR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Districts_sanitaires_3_0() {
+            return {
+                pane: 'pane_Districts_sanitaires_3',
+                opacity: 1,
+                color: 'rgba(176,70,174,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Districts_sanitaires_3');
+        map.getPane('pane_Districts_sanitaires_3').style.zIndex = 403;
+        map.getPane('pane_Districts_sanitaires_3').style['mix-blend-mode'] = 'normal';
+        var layer_Districts_sanitaires_3 = new L.geoJson(json_Districts_sanitaires_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Districts_sanitaires_3',
+            layerName: 'layer_Districts_sanitaires_3',
+            pane: 'pane_Districts_sanitaires_3',
+            onEachFeature: pop_Districts_sanitaires_3,
+            style: style_Districts_sanitaires_3_0,
+        });
+        bounds_group.addLayer(layer_Districts_sanitaires_3);
+        map.addLayer(layer_Districts_sanitaires_3);
+        function pop_USP_Kara_Accouch_moyen_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">District</th>\
+                        <td>' + (feature.properties['prefecture'] !== null ? autolinker.link(feature.properties['prefecture'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Type</th>\
+                        <td>' + (feature.properties['Type'] !== null ? autolinker.link(feature.properties['Type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Moyenne_Accouchement en 2019</th>\
+                        <td>' + (feature.properties['2019'] !== null ? autolinker.link(feature.properties['2019'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Moyenne_Accouchement en 2020</th>\
+                        <td>' + (feature.properties['2020'] !== null ? autolinker.link(feature.properties['2020'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Moyenne_Accouchement en 2021</th>\
+                        <td>' + (feature.properties['2021'] !== null ? autolinker.link(feature.properties['2021'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_USP_Kara_Accouch_moyen_4_0() {
+            return {
+                pane: 'pane_USP_Kara_Accouch_moyen_4',
+                radius: 4.399999999999995,
+                opacity: 1,
+                color: 'rgba(227,26,28,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+        }
+        function style_USP_Kara_Accouch_moyen_4_1() {
+            return {
+                pane: 'pane_USP_Kara_Accouch_moyen_4',
+                radius: 2.538461538461536,
+                opacity: 1,
+                color: 'rgba(227,26,28,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,26,28,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_USP_Kara_Accouch_moyen_4');
+        map.getPane('pane_USP_Kara_Accouch_moyen_4').style.zIndex = 404;
+        map.getPane('pane_USP_Kara_Accouch_moyen_4').style['mix-blend-mode'] = 'multiply';
+        var layer_USP_Kara_Accouch_moyen_4 = new L.geoJson.multiStyle(json_USP_Kara_Accouch_moyen_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_USP_Kara_Accouch_moyen_4',
+            layerName: 'layer_USP_Kara_Accouch_moyen_4',
+            pane: 'pane_USP_Kara_Accouch_moyen_4',
+            onEachFeature: pop_USP_Kara_Accouch_moyen_4,
+            pointToLayers: [function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.shapeMarker(latlng, style_USP_Kara_Accouch_moyen_4_0(feature));
+            },function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.shapeMarker(latlng, style_USP_Kara_Accouch_moyen_4_1(feature));
+            },
+        ]});
+        var cluster_USP_Kara_Accouch_moyen_4 = new L.MarkerClusterGroup({showCoverageOnHover: false,
+            spiderfyDistanceMultiplier: 2});
+        cluster_USP_Kara_Accouch_moyen_4.addLayer(layer_USP_Kara_Accouch_moyen_4);
+
+        bounds_group.addLayer(layer_USP_Kara_Accouch_moyen_4);
+        cluster_USP_Kara_Accouch_moyen_4.addTo(map);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/USP_Kara_Accouch_moyen_4.png" /> USP_Kara_Accouch_moyen': cluster_USP_Kara_Accouch_moyen_4,'<img src="legend/Districts_sanitaires_3.png" /> Districts_sanitaires': layer_Districts_sanitaires_3,"OSM Humanitarian": layer_OSMHumanitarian_2,"Bing Aerial": layer_BingAerial_1,"Mapbox Streets v10": layer_MapboxStreetsv10_0,}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_Districts_sanitaires_3.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['PRéFECTUR'] !== null?String('<div style="color: #0189f6; font-size: 10pt; font-weight: bold; font-family: \'Arial Narrow\', sans-serif;">' + layer.feature.properties['PRéFECTUR']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Districts_sanitaires_3'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_USP_Kara_Accouch_moyen_4.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['q2wHide_Nom'] !== null?String('<div style="color: #000000; font-size: 7pt; font-weight: bold; font-family: \'Arial Narrow\', sans-serif;">' + layer.feature.properties['q2wHide_Nom']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_USP_Kara_Accouch_moyen_4'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_Districts_sanitaires_3,layer_USP_Kara_Accouch_moyen_4]);
+        map.on("zoomend", function(){
+            resetLabels([layer_Districts_sanitaires_3,layer_USP_Kara_Accouch_moyen_4]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_Districts_sanitaires_3,layer_USP_Kara_Accouch_moyen_4]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_Districts_sanitaires_3,layer_USP_Kara_Accouch_moyen_4]);
+        });
+        </script>
+    </body>
+</html>
